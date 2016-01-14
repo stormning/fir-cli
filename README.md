@@ -199,6 +199,19 @@ $ fir upgrade
 
 [使用 github issue 即可](https://github.com/FIRHQ/fir-cli/issues)
 1
+<<<<<<< HEAD
+1
 2
 3
 3
+3
+4
+4
+5
+5
+=======
+2
+3
+3
+>>>>>>> 4ada4b1aa2b2cc498271c25817d451d2fd8d5763
+5
