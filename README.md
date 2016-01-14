@@ -196,3 +196,5 @@ $ fir upgrade
 ## 提交反馈
 
 [使用 github issue 即可](https://github.com/FIRHQ/fir-cli/issues)
+1
+1
