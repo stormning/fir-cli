@@ -9,10 +9,6 @@ properties:
     required: false
 
 run: |
-  workpath=`pwd`
-  mkdir -p /tmp/fir-cli
-  cp -R $workpath/* /tmp/fir-cli/
-  cd /tmp/fir-cli
-  bundle install
+  gem build fir-cli.gemspec
+  gem install *.gem
   fir publish ${FIR_APP_PATH} --token=$FIR_TOKEN
-  rm -rf /tmp/fir-cli
