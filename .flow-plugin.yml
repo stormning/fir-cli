@@ -1,0 +1,57 @@
+name: fir-cli
+properties:
+  - name: PLUGIN_FIR_TOKEN
+    type: string
+    required: true
+
+  - name: PLUGIN_FIR_APP_PATH
+    type: string
+    required: false
+
+  - name: PLUGIN_FIR_CHANGELOG
+    type: string
+    required: false
+
+
+run: |
+  gem build fir-cli.gemspec
+  gem install *.gem
+  
+  mkdir /tmp/fir
+  echo "
+    require 'fir'
+    require 'open3'
+    require 'rest-client'
+    logfile = STDOUT
+    FIR.logger       = Logger.new(logfile)
+    FIR.logger.level =  Logger::INFO
+    file_path = \"${PLUGIN_FIR_APP_PATH}\"
+    fir_token = \"${PLUGIN_FIR_TOKEN}\"
+    fir_changelog = \"${PLUGIN_FIR_CHANGELOG}\"
+    artifact_url = \"${FLOW_API_DOMAIN}/artifacts\"
+    job_id = ${FLOW_JOB_ID}
+    FIR_IM = \"FIR_IM\"
+
+    FIR.publish(file_path, {token: fir_token, changelog: fir_changelog})
+    info = FIR.fetch_app_info
+    url = \"http://fir.im/#{info[:short]}?release_id=#{info[:master_release_id]}\"
+    FIR.logger.info \"Fir download url: #{url}\"
+
+    artifact_json = {
+      name: File.basename(file_path),
+      url: url,
+      tag: FIR_IM,
+      jobId: job_id
+    }
+
+    begin
+      RestClient::Request.execute(method: :post, url: artifact_url, payload: artifact_json.to_json, headers: {content_type: :json, accept: :json})  
+    rescue Exception => e
+      FIR.logger.error \"Upload Artifact Exception #{e.message}\"
+      exit
+    end
+
+    FIR.logger.info \"Finish Upload\"
+  " > /tmp/fir/tmp.rb
+
+  ruby /tmp/fir/tmp.rb
