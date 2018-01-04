@@ -17,7 +17,7 @@ run: |
   gem build fir-cli.gemspec
   gem install *.gem
   
-  mkdir /tmp/fir
+  mkdir -p /tmp/fir
   echo "
     require 'fir'
     require 'open3'
@@ -55,3 +55,5 @@ run: |
   " > /tmp/fir/tmp.rb
 
   ruby /tmp/fir/tmp.rb
+
+  rm -rf /tmp/fir
