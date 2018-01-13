@@ -35,3 +35,5 @@ fir.im-cli 可以通过指令查看, 上传, 编译 iOS/Android 应用.
 
 ![](http://7rf35s.com1.z0.glb.clouddn.com/coffee.png)
 test data
+aa
+test
